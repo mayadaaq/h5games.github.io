@@ -43,4 +43,62 @@ class Game {
     });
 
     this.erase();
+  // Start the game
+  play() {
+    if (this.shouldShowAdOnPlay) {
+      this.shouldShowAdOnPlay = false;
+
+      adBreak({
+        type: 'next',  // ad shows at start of next level
+        name: 'restart-game',
+        beforeAd: () => { this.disableButtons(); },  // You may also want to mute the game's sound.
+        afterAd: () => { this.enableButtons(); },    // resume the game flow.
+      });
+    }
+
+    this.score = 0;
+    this.canvas.fillText('Score: ' + this.score, 8, 26);
+    this.canvas.fillText('Heads or Tails?', 66, 150);
+    this.playButton.style.display = 'none'
+    this.headsButton.style.display = 'inline-block'
+    this.tailsButton.style.display = 'inline-block'
+  }
+
   [...]
+
+  // Guess the flip incorrectly
+  lose(sideUp) {
+    this.erase()
+    this.canvas.fillText('Sorry, it was ' + sideUp, 50, 100);
+    this.canvas.fillText('Your score was ' + this.score, 50, 150);
+    this.canvas.fillText('Want to play again?', 45, 200);
+
+    this.playButton.style.display = 'inline-block'
+    this.headsButton.style.display = 'none'
+    this.tailsButton.style.display = 'none'
+    this.shouldShowAdOnPlay = true;
+  }
+
+  [...]
+
+  // Erase the canvas
+  erase() {
+    this.canvas.fillStyle = '#ADD8E6';
+    this.canvas.fillRect(0, 0, 300, 300);
+    this.canvas.fillStyle = '#000000';
+  }
+
+  enableButtons() {
+    this.playButton.disabled = false;
+    this.headsButton.disabled = false;
+    this.tailsButton.disabled = false;
+  }
+
+  disableButtons() {
+    this.playButton.disabled = true;
+    this.headsButton.disabled = true;
+    this.tailsButton.disabled = true;
+  }
+}
+
+const game = new Game();
