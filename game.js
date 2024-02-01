@@ -1,10 +1,9 @@
+// Create a coin flip game
 class Game {
   constructor() {
     // Define variables
     this.score = 0;
     this.choice = '';
-    this.muted = false;
-    this.shouldShowAdOnPlay = false;
 
     this.canvas = document.getElementById('gameContainer').getContext('2d');
     this.canvas.font = '24px Arial';
@@ -12,11 +11,6 @@ class Game {
     this.playButton = document.getElementById('playButton');
     this.headsButton = document.getElementById('headsButton');
     this.tailsButton = document.getElementById('tailsButton');
-    this.muteButton = document.getElementById('muteButton');
-
-    adConfig({
-      sound: 'on',
-    });
 
     // On click listeners for the game's buttons.
     this.playButton.addEventListener('click', () => {
@@ -34,35 +28,11 @@ class Game {
       this.flipCoin();
     });
 
-    this.muteButton.addEventListener('click', () => {
-      var soundString = this.muted ? 'on' : 'off';
-      this.muteButton.innerHTML = this.muted ? 'Mute sound' : 'Un-mute sound';
-      this.muted = !this.muted;
-      adConfig({
-        sound: soundString,
-      });
-    });
-
     this.erase();
   }
 
   // Start the game
   play() {
-    if (this.shouldShowAdOnPlay) {
-      this.shouldShowAdOnPlay = false;
-
-      adBreak({
-        type: 'next',
-        name: 'restart-game',
-        beforeAd: () => {
-          this.disableButtons();
-        },
-        afterAd: () => {
-          this.enableButtons();
-        },
-      });
-    }
-
     this.score = 0;
     this.canvas.fillText('Score: ' + this.score, 8, 26);
     this.canvas.fillText('Heads or Tails?', 66, 150);
@@ -79,9 +49,7 @@ class Game {
     this.canvas.fillText('Score: ' + this.score, 8, 26);
     this.canvas.fillText('Flipping coin . . .', 60, 150);
 
-    setTimeout(() => {
-      this.coinLanded();
-    }, 2000);
+    setTimeout(() => { this.coinLanded() }, 2000);
   }
 
   // Logic for when the coin lands
@@ -89,13 +57,13 @@ class Game {
     this.headsButton.disabled = false;
     this.tailsButton.disabled = false;
     let sideUp;
-    if (Math.random() < 0.5) {
+    if(Math.random() < 0.5) {
       sideUp = 'Heads';
     } else {
       sideUp = 'Tails';
     }
 
-    if (sideUp === this.choice) {
+    if (sideUp === this.choice ) {
       this.win(sideUp);
     } else {
       this.lose(sideUp);
@@ -121,7 +89,6 @@ class Game {
     this.playButton.style.display = 'inline-block';
     this.headsButton.style.display = 'none';
     this.tailsButton.style.display = 'none';
-    this.shouldShowAdOnPlay = true;
   }
 
   // Erase the canvas
@@ -129,18 +96,6 @@ class Game {
     this.canvas.fillStyle = '#ADD8E6';
     this.canvas.fillRect(0, 0, 300, 300);
     this.canvas.fillStyle = '#000000';
-  }
-
-  enableButtons() {
-    this.playButton.disabled = false;
-    this.headsButton.disabled = false;
-    this.tailsButton.disabled = false;
-  }
-
-  disableButtons() {
-    this.playButton.disabled = true;
-    this.headsButton.disabled = true;
-    this.tailsButton.disabled = true;
   }
 }
 
