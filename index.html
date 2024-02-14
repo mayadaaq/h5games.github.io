@@ -15,11 +15,20 @@
         }
 
         #am-iframe {
-            width: 100%; /* Set iframe width to fill its container */
-            height: auto; /* Automatically adjust height based on content */
-            max-width: 411px; /* Set maximum width for larger screens */
-            margin: 0 auto; /* Center the iframe horizontally */
+            width: 411px; /* Set default width for larger screens */
+            height: 514px; /* Set default height for larger screens */
             display: block; /* Ensure the iframe behaves as a block element */
+            margin: 0 auto; /* Center the iframe horizontally */
+        }
+
+        @media only screen and (max-width: 480px) {
+            /* Adjust iframe size for smaller screens */
+            #am-iframe {
+                width: 100%; /* Set iframe width to fill its container */
+                height: auto; /* Automatically adjust height based on content */
+                max-width: 100%; /* Set maximum width for smaller screens */
+                max-height: none; /* Reset max-height for smaller screens */
+            }
         }
     </style>
     
